@@ -1,0 +1,33 @@
+config:
+  validation: true
+
+build:
+  maxIssues: 0
+
+tecoterm:
+  active: true
+  NoCommentsRule:
+    active: true
+  NoNotNullAssertionRule:
+    active: true
+  NoUnsafeCastRule:
+    active: true
+  NoAnyTypeRule:
+    active: true
+  NoSuppressRule:
+    active: true
+  NoLateinitRule:
+    active: true
+  NoGlobalScopeRule:
+    active: true
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated:
+      - Composable
+  MatchingDeclarationName:
+    active: true
+
+style:
+  MaxLineLength:
+    maxLineLength: 140
