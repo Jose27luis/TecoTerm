@@ -9,6 +9,7 @@ AGENTS.md
 *.log
 
 .gradle/
+.kotlin/
 build/
 local.properties
 captures/
@@ -20,7 +21,7 @@ captures/
 *.dex
 *.hprof
 
-secretos/
+secrets/
 *.jks
 *.keystore
 keystore.properties
