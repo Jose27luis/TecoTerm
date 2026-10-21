@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
+    <string name="app_name">TecoTerm</string>
+    <string name="diagnostics_titulo">Algoritmos del dispositivo</string>
+    <string name="diagnostics_cargando">Comprobando algoritmos</string>
+    <string name="diagnostics_disponible">Disponible</string>
+    <string name="diagnostics_no_disponible">No disponible, falta %1$s</string>
+    <string name="categoria_intercambio_claves">Intercambio de claves</string>
+    <string name="categoria_clave_host">Clave del servidor</string>
+    <string name="categoria_cifrado">Cifrado</string>
+    <string name="categoria_mac">Integridad</string>
+</resources>
