@@ -5,6 +5,7 @@ import pe.amantix.tecoterm.core.ssh.wire.SshReader
 import java.math.BigInteger
 import java.security.GeneralSecurityException
 import java.security.KeyFactory
+import java.security.PublicKey
 import java.security.interfaces.RSAPublicKey
 import java.security.spec.RSAPublicKeySpec
 
@@ -13,6 +14,10 @@ public class RsaHostKey internal constructor(
     internal val clave: RSAPublicKey,
 ) : HostKey(blob) {
     override val tipo: String = TIPO
+
+    override val clavePublica: PublicKey = clave
+
+    override val algoritmoPlataforma: String = "RSA"
 
     override fun admite(algoritmoFirma: String): Boolean = algoritmoFirma in algoritmosFirma.keys
 
