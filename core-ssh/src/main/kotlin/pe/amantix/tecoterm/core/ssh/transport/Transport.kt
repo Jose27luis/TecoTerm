@@ -30,7 +30,7 @@ internal class Transport(
     private val entrantes: Channel<IncomingPacket> = Channel(Channel.UNLIMITED)
     private val primerIntercambio: CompletableDeferred<Unit> = CompletableDeferred()
     private val causaCierre: AtomicReference<SshException?> = AtomicReference(null)
-    private val negociador: AlgorithmNegotiator = AlgorithmNegotiator(opciones.algoritmos)
+    private val negociador: AlgorithmNegotiator = AlgorithmNegotiator(opciones.algoritmos, opciones.tipoClaveHostConocida)
     private val proceso: KeyExchangeProcess =
         KeyExchangeProcess(canal, escritura, negociador, PacketCipherFactory(aleatorio), opciones, versionServidor)
 
