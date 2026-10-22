@@ -1,0 +1,125 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "7beec0ce12284a879e25955de1b98daa",
+    "entities": [
+      {
+        "tableName": "credenciales",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `tipo` TEXT NOT NULL, `nombre` TEXT NOT NULL, `tipo_clave` TEXT, `clave_publica` BLOB, `huella` TEXT, `contenido_cifrado` BLOB NOT NULL, `alias_keystore` TEXT NOT NULL, `creada_en` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipo",
+            "columnName": "tipo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipoClave",
+            "columnName": "tipo_clave",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "clavePublica",
+            "columnName": "clave_publica",
+            "affinity": "BLOB"
+          },
+          {
+            "fieldPath": "huella",
+            "columnName": "huella",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "contenidoCifrado",
+            "columnName": "contenido_cifrado",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aliasKeystore",
+            "columnName": "alias_keystore",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creadaEn",
+            "columnName": "creada_en",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "servidores_conocidos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`host` TEXT NOT NULL, `puerto` INTEGER NOT NULL, `tipo_clave` TEXT NOT NULL, `clave` BLOB NOT NULL, `huella` TEXT NOT NULL, `visto_por_primera_vez` INTEGER NOT NULL, PRIMARY KEY(`host`, `puerto`))",
+        "fields": [
+          {
+            "fieldPath": "host",
+            "columnName": "host",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "puerto",
+            "columnName": "puerto",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipoClave",
+            "columnName": "tipo_clave",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clave",
+            "columnName": "clave",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "huella",
+            "columnName": "huella",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vistoPorPrimeraVez",
+            "columnName": "visto_por_primera_vez",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "host",
+            "puerto"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7beec0ce12284a879e25955de1b98daa')"
+    ]
+  }
+}
