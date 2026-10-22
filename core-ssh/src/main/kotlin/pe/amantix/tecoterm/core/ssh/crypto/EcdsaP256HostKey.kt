@@ -3,6 +3,7 @@ package pe.amantix.tecoterm.core.ssh.crypto
 import pe.amantix.tecoterm.core.ssh.SshException
 import pe.amantix.tecoterm.core.ssh.SshProtocolException
 import pe.amantix.tecoterm.core.ssh.wire.SshReader
+import java.security.PublicKey
 import java.security.interfaces.ECPublicKey
 
 public class EcdsaP256HostKey internal constructor(
@@ -10,6 +11,10 @@ public class EcdsaP256HostKey internal constructor(
     internal val clave: ECPublicKey,
 ) : HostKey(blob) {
     override val tipo: String = TIPO
+
+    override val clavePublica: PublicKey = clave
+
+    override val algoritmoPlataforma: String = "EC"
 
     override fun admite(algoritmoFirma: String): Boolean = algoritmoFirma == TIPO
 
