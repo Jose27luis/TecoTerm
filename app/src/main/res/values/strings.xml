@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
     <string name="app_name">TecoTerm</string>
-    <string name="diagnostics_titulo">Algoritmos del dispositivo</string>
-    <string name="diagnostics_cargando">Comprobando algoritmos</string>
+    <string name="diagnostics_titulo">Diagnóstico del dispositivo</string>
+    <string name="diagnostics_cargando">Comprobando el dispositivo</string>
     <string name="diagnostics_disponible">Disponible</string>
     <string name="diagnostics_no_disponible">No disponible, falta %1$s</string>
+    <string name="diagnostics_almacen_seguro">Almacén seguro</string>
+    <string name="diagnostics_keystore">Android Keystore</string>
+    <string name="diagnostics_strongbox">StrongBox</string>
+    <string name="diagnostics_funciona">Funciona</string>
+    <string name="diagnostics_no_funciona">No funciona</string>
+    <string name="diagnostics_strongbox_ausente">No disponible, la clave queda en el TEE</string>
     <string name="categoria_intercambio_claves">Intercambio de claves</string>
     <string name="categoria_clave_host">Clave del servidor</string>
     <string name="categoria_cifrado">Cifrado</string>
