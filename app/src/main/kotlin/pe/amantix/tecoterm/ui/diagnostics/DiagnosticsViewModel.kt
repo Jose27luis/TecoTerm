@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import pe.amantix.tecoterm.core.security.SecurityDiagnostics
 import pe.amantix.tecoterm.core.ssh.crypto.PlatformAlgorithms
 
 public class DiagnosticsViewModel : ViewModel() {
@@ -17,7 +18,8 @@ public class DiagnosticsViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             val algoritmos = withContext(Dispatchers.Default) { PlatformAlgorithms.detectar() }
-            _estado.value = DiagnosticsState.Listo(algoritmos)
+            val seguridad = withContext(Dispatchers.IO) { SecurityDiagnostics.comprobar() }
+            _estado.value = DiagnosticsState.Listo(algoritmos, seguridad)
         }
     }
 }
