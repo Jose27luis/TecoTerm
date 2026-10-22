@@ -146,6 +146,7 @@ public object SshClient {
             },
             limiteBytesRekey = config.limiteBytesRekey,
             limiteTiempoRekey = config.limiteTiempoRekey,
+            tipoClaveHostConocida = config.tipoClaveHostConocida,
         )
 
     private fun cerrarSocket(socket: Socket) {
