@@ -1,6 +1,7 @@
 package pe.amantix.tecoterm.core.ssh.auth
 
 import pe.amantix.tecoterm.core.ssh.SshProtocolException
+import pe.amantix.tecoterm.core.ssh.crypto.SecretText
 import pe.amantix.tecoterm.core.ssh.wire.SshMessage
 import pe.amantix.tecoterm.core.ssh.wire.SshReader
 import pe.amantix.tecoterm.core.ssh.wire.SshWriter
@@ -38,7 +39,7 @@ internal class KeyboardInteractiveMethod : AuthMethod {
             }
             val escritor = SshWriter().escribirByte(SshMessage.SSH_MSG_USERAUTH_INFO_RESPONSE).escribirUint32(respuestas.size)
             respuestas.forEach { respuesta ->
-                val bytes = AuthContext.utf8(respuesta)
+                val bytes = SecretText.utf8(respuesta)
                 escritor.escribirString(bytes)
                 bytes.fill(0)
             }
