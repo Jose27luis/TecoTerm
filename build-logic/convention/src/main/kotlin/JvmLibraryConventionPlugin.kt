@@ -21,8 +21,10 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
                 add("testImplementation", catalogo.findLibrary("junit-jupiter").get())
                 add("testRuntimeOnly", catalogo.findLibrary("junit-platform-launcher").get())
             }
+            val entornoPruebas = providers.environmentVariablesPrefixedBy("TECOTERM_")
             tasks.withType<Test>().configureEach {
                 useJUnitPlatform()
+                environment(entornoPruebas.get())
             }
         }
     }
