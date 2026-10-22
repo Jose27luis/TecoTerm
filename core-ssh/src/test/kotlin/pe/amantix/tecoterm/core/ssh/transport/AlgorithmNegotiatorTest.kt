@@ -58,6 +58,16 @@ class AlgorithmNegotiatorTest {
     }
 
     @Test
+    fun `el tipo de clave conocido del servidor va primero`() {
+        val conRsa = AlgorithmNegotiator(PlatformAlgorithms::disponibles, tipoClaveHostConocida = "ssh-rsa")
+        val conEcdsa = AlgorithmNegotiator(PlatformAlgorithms::disponibles, tipoClaveHostConocida = "ecdsa-sha2-nistp256")
+
+        assertEquals(listOf("rsa-sha2-512", "rsa-sha2-256"), conRsa.propuesta(true).claveHost.take(2))
+        assertEquals("ecdsa-sha2-nistp256", conEcdsa.propuesta(true).claveHost.first())
+        assertEquals("ssh-ed25519", negociador.propuesta(true).claveHost.first())
+    }
+
+    @Test
     fun `sin algoritmo comun la negociacion falla`() {
         assertThrows<SshProtocolException> {
             negociador.negociar(negociador.propuesta(true), servidor(cifrado = listOf("3des-cbc")), primerIntercambio = true)
