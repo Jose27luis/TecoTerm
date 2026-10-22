@@ -16,6 +16,7 @@ public data class SshConfig(
     public val limiteBytesRekey: Long = LIMITE_BYTES_REKEY,
     public val limiteTiempoRekey: Duration = 1.hours,
     public val algoritmosPermitidos: Set<SshAlgorithm> = SshAlgorithm.entries.toSet(),
+    public val tipoClaveHostConocida: String? = null,
 ) {
     private companion object {
         const val PUERTO_SSH: Int = 22
