@@ -16,12 +16,12 @@ public enum class SshAlgorithm(
     CURVE25519_SHA256(
         "curve25519-sha256",
         AlgorithmCategory.INTERCAMBIO_CLAVES,
-        listOf(KeyPairGeneratorPrimitive("X25519"), KeyAgreementPrimitive("X25519"), DigestPrimitive("SHA-256")),
+        primitivasCurve25519,
     ),
     CURVE25519_SHA256_LIBSSH(
         "curve25519-sha256@libssh.org",
         AlgorithmCategory.INTERCAMBIO_CLAVES,
-        listOf(KeyPairGeneratorPrimitive("X25519"), KeyAgreementPrimitive("X25519"), DigestPrimitive("SHA-256")),
+        primitivasCurve25519,
     ),
     ECDH_SHA2_NISTP256(
         "ecdh-sha2-nistp256",
@@ -89,3 +89,12 @@ public enum class SshAlgorithm(
         listOf(MacPrimitive("HmacSHA512")),
     ),
 }
+
+private val primitivasCurve25519: List<PlatformPrimitive>
+    get() =
+        listOf(
+            KeyPairGeneratorPrimitive("X25519"),
+            KeyAgreementPrimitive("X25519"),
+            KeyFactoryPrimitive("X25519"),
+            DigestPrimitive("SHA-256"),
+        )
