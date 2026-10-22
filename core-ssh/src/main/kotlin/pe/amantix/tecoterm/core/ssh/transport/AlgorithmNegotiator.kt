@@ -6,6 +6,7 @@ import pe.amantix.tecoterm.core.ssh.crypto.SshAlgorithm
 
 internal class AlgorithmNegotiator(
     private val disponibles: (AlgorithmCategory) -> List<SshAlgorithm>,
+    private val tipoClaveHostConocida: String? = null,
 ) {
     fun propuesta(primerIntercambio: Boolean): KexLists {
         val intercambio = nombres(AlgorithmCategory.INTERCAMBIO_CLAVES)
@@ -13,7 +14,7 @@ internal class AlgorithmNegotiator(
         val mac = nombres(AlgorithmCategory.MAC)
         return KexLists(
             intercambio = if (primerIntercambio) intercambio + EXT_INFO_CLIENTE + KEX_ESTRICTO_CLIENTE else intercambio,
-            claveHost = nombres(AlgorithmCategory.CLAVE_HOST),
+            claveHost = clavesHostEnOrden(),
             cifradoClienteServidor = cifrado,
             cifradoServidorCliente = cifrado,
             macClienteServidor = mac,
@@ -79,11 +80,22 @@ internal class AlgorithmNegotiator(
 
     private fun nombres(categoria: AlgorithmCategory): List<String> = disponibles(categoria).map(SshAlgorithm::nombre)
 
+    private fun clavesHostEnOrden(): List<String> {
+        val nombres = nombres(AlgorithmCategory.CLAVE_HOST)
+        val tipo = tipoClaveHostConocida ?: return nombres
+        val (conocidos, resto) = nombres.partition { tipoDeClave(it) == tipo }
+        return conocidos + resto
+    }
+
+    private fun tipoDeClave(algoritmo: String): String = if (algoritmo.startsWith(PREFIJO_RSA_SHA2)) TIPO_RSA else algoritmo
+
     companion object {
         const val EXT_INFO_CLIENTE: String = "ext-info-c"
         const val KEX_ESTRICTO_CLIENTE: String = "kex-strict-c-v00@openssh.com"
         const val KEX_ESTRICTO_SERVIDOR: String = "kex-strict-s-v00@openssh.com"
         const val SIN_COMPRESION: String = "none"
+        private const val PREFIJO_RSA_SHA2: String = "rsa-sha2-"
+        private const val TIPO_RSA: String = "ssh-rsa"
 
         fun esAead(cifrado: SshAlgorithm): Boolean = cifrado == SshAlgorithm.AES256_GCM || cifrado == SshAlgorithm.AES128_GCM
     }
