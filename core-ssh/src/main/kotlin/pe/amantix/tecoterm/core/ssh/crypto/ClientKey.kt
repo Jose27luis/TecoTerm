@@ -1,11 +1,16 @@
 package pe.amantix.tecoterm.core.ssh.crypto
 
+import pe.amantix.tecoterm.core.ssh.InvalidKeyFileException
 import pe.amantix.tecoterm.core.ssh.wire.SshWriter
+import java.security.GeneralSecurityException
+import java.security.KeyFactory
 import java.security.KeyPair
 import java.security.PrivateKey
 import java.security.Signature
 import java.security.interfaces.ECPublicKey
 import java.security.interfaces.RSAPublicKey
+import java.security.spec.PKCS8EncodedKeySpec
+import java.util.Base64
 
 public class ClientKey private constructor(
     private val clavePrivada: PrivateKey,
@@ -15,6 +20,12 @@ public class ClientKey private constructor(
 ) {
     public val blobPublico: ByteArray
         get() = blob.copyOf()
+
+    public fun huellaSha256(): String = HostKey.desdeBlob(blob).huellaSha256()
+
+    public fun lineaPublica(comentario: String): String = "$tipo ${Base64.getEncoder().encodeToString(blob)} $comentario".trimEnd()
+
+    public fun pkcs8(): ByteArray = checkNotNull(clavePrivada.encoded) { "La clave privada no se puede exportar" }
 
     internal fun firmar(
         algoritmoFirma: String,
@@ -52,6 +63,20 @@ public class ClientKey private constructor(
         }
 
     public companion object {
+        public fun desdeAlmacen(
+            blobPublico: ByteArray,
+            pkcs8: ByteArray,
+        ): ClientKey {
+            val publica = HostKey.desdeBlob(blobPublico)
+            val privada =
+                try {
+                    KeyFactory.getInstance(publica.algoritmoPlataforma).generatePrivate(PKCS8EncodedKeySpec(pkcs8))
+                } catch (error: GeneralSecurityException) {
+                    throw InvalidKeyFileException("La clave guardada no se pudo reconstruir", error)
+                }
+            return desde(KeyPair(publica.clavePublica, privada))
+        }
+
         public fun desde(par: KeyPair): ClientKey {
             val publica = par.public
             return when {
