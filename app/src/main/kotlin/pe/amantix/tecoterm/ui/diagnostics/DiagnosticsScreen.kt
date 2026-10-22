@@ -43,7 +43,7 @@ public fun DiagnosticsScreen(viewModel: DiagnosticsViewModel = viewModel()) {
     ) { margenes ->
         when (val actual = estado) {
             DiagnosticsState.Cargando -> CargandoAlgoritmos(margenes)
-            is DiagnosticsState.Listo -> ListaAlgoritmos(actual.algoritmos, margenes)
+            is DiagnosticsState.Listo -> ListaDiagnostico(actual, margenes)
         }
     }
 }
@@ -64,26 +64,48 @@ private fun CargandoAlgoritmos(margenes: PaddingValues) {
 }
 
 @Composable
-private fun ListaAlgoritmos(
-    algoritmos: List<AlgorithmAvailability>,
+private fun ListaDiagnostico(
+    diagnostico: DiagnosticsState.Listo,
     margenes: PaddingValues,
 ) {
-    val porCategoria = algoritmos.groupBy { it.algoritmo.categoria }
+    val porCategoria = diagnostico.algoritmos.groupBy { it.algoritmo.categoria }
+    val seguridad = diagnostico.seguridad
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = margenes,
     ) {
+        item(key = CLAVE_SEGURIDAD) {
+            Encabezado(stringResource(R.string.diagnostics_almacen_seguro))
+            FilaEstado(
+                titulo = stringResource(R.string.diagnostics_keystore),
+                correcto = seguridad.keystoreFunciona,
+                detalle =
+                    stringResource(
+                        if (seguridad.keystoreFunciona) R.string.diagnostics_funciona else R.string.diagnostics_no_funciona,
+                    ),
+            )
+            HorizontalDivider()
+            FilaEstado(
+                titulo = stringResource(R.string.diagnostics_strongbox),
+                correcto = seguridad.strongBox,
+                detalle =
+                    stringResource(
+                        if (seguridad.strongBox) R.string.diagnostics_disponible else R.string.diagnostics_strongbox_ausente,
+                    ),
+            )
+            HorizontalDivider()
+        }
         porCategoria.forEach { (categoria, deCategoria) ->
             item(key = categoria.name) {
-                Text(
-                    text = stringResource(nombreCategoria(categoria)),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 8.dp),
-                )
+                Encabezado(stringResource(nombreCategoria(categoria)))
             }
             items(deCategoria, key = { it.algoritmo.name }) { disponibilidad ->
-                FilaAlgoritmo(disponibilidad)
+                FilaEstado(
+                    titulo = disponibilidad.algoritmo.nombre,
+                    correcto = disponibilidad.disponible,
+                    detalle = textoEstado(disponibilidad),
+                    monoespaciado = true,
+                )
                 HorizontalDivider()
             }
         }
@@ -91,13 +113,23 @@ private fun ListaAlgoritmos(
 }
 
 @Composable
-private fun FilaAlgoritmo(disponibilidad: AlgorithmAvailability) {
-    val colorEstado =
-        if (disponibilidad.disponible) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.error
-        }
+private fun Encabezado(texto: String) {
+    Text(
+        text = texto,
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 8.dp),
+    )
+}
+
+@Composable
+private fun FilaEstado(
+    titulo: String,
+    correcto: Boolean,
+    detalle: String,
+    monoespaciado: Boolean = false,
+) {
+    val colorEstado = if (correcto) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -107,12 +139,12 @@ private fun FilaAlgoritmo(disponibilidad: AlgorithmAvailability) {
         )
         Column(modifier = Modifier.padding(start = 16.dp)) {
             Text(
-                text = disponibilidad.algoritmo.nombre,
-                fontFamily = FontFamily.Monospace,
+                text = titulo,
+                fontFamily = if (monoespaciado) FontFamily.Monospace else FontFamily.Default,
                 style = MaterialTheme.typography.bodyMedium,
             )
             Text(
-                text = textoEstado(disponibilidad),
+                text = detalle,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -139,3 +171,5 @@ private fun nombreCategoria(categoria: AlgorithmCategory): Int =
         AlgorithmCategory.CIFRADO -> R.string.categoria_cifrado
         AlgorithmCategory.MAC -> R.string.categoria_mac
     }
+
+private const val CLAVE_SEGURIDAD: String = "almacen-seguro"
