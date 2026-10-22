@@ -1,5 +1,4 @@
 import com.android.build.api.dsl.ApplicationExtension
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -16,25 +15,16 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                     targetSdk = VERSION_SDK_COMPILACION
                 }
                 compileOptions {
-                    sourceCompatibility = JavaVersion.toVersion(VERSION_JAVA)
-                    targetCompatibility = JavaVersion.toVersion(VERSION_JAVA)
+                    configurarJava()
                 }
                 buildFeatures {
                     compose = true
                 }
                 lint {
-                    abortOnError = true
-                    warningsAsErrors = true
-                    checkDependencies = true
-                    lintConfig = rootProject.file("config/lint/lint.xml")
+                    configurarLintEstricto(target)
                 }
             }
             configurarCompiladorKotlin()
         }
-    }
-
-    private companion object {
-        const val VERSION_SDK_COMPILACION: Int = 37
-        const val VERSION_SDK_MINIMA: Int = 33
     }
 }
