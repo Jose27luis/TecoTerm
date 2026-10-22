@@ -18,6 +18,10 @@ public sealed class HostKey(
 
     public abstract val tipo: String
 
+    internal abstract val clavePublica: PublicKey
+
+    internal abstract val algoritmoPlataforma: String
+
     public fun huellaSha256(): String {
         val resumen = MessageDigest.getInstance("SHA-256").digest(contenido)
         return "SHA256:" + Base64.getEncoder().withoutPadding().encodeToString(resumen)
