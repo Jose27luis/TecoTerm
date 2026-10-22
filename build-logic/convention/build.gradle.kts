@@ -18,5 +18,9 @@ gradlePlugin {
             id = "tecoterm.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
+        register("androidLibrary") {
+            id = "tecoterm.android.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
     }
 }
