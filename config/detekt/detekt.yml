@@ -28,6 +28,11 @@ naming:
   MatchingDeclarationName:
     active: true
 
+complexity:
+  TooManyFunctions:
+    ignorePrivate: true
+    thresholdInClasses: 13
+
 style:
   MaxLineLength:
     maxLineLength: 140
