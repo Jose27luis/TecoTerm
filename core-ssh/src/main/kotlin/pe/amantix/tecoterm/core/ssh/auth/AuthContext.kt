@@ -6,7 +6,6 @@ import pe.amantix.tecoterm.core.ssh.transport.Transport
 import pe.amantix.tecoterm.core.ssh.wire.SshMessage
 import pe.amantix.tecoterm.core.ssh.wire.SshReader
 import pe.amantix.tecoterm.core.ssh.wire.SshWriter
-import java.nio.CharBuffer
 
 internal class AuthContext(
     val transport: Transport,
@@ -53,15 +52,5 @@ internal class AuthContext(
     companion object {
         const val SERVICIO_AUTENTICACION: String = "ssh-userauth"
         const val SERVICIO_CONEXION: String = "ssh-connection"
-
-        fun utf8(caracteres: CharArray): ByteArray {
-            val buffer = Charsets.UTF_8.encode(CharBuffer.wrap(caracteres))
-            val bytes = ByteArray(buffer.remaining())
-            buffer.get(bytes)
-            if (buffer.hasArray()) {
-                buffer.array().fill(0)
-            }
-            return bytes
-        }
     }
 }
