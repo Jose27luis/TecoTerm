@@ -58,8 +58,17 @@ Implementa SSH-2 según los RFC 4251 a 4254.
 
 ### Claves
 
-- Importación de claves OpenSSH, con y sin passphrase, y PEM.
-- Generación de claves Ed25519 en el teléfono y exportación de la pública.
+- Importación de claves Ed25519, RSA y ECDSA P-256, con y sin passphrase.
+
+| Formato | Cifrado admitido |
+|---|---|
+| OpenSSH (`BEGIN OPENSSH PRIVATE KEY`) | bcrypt con AES-CTR, AES-CBC o AES-GCM |
+| PKCS#8 (`BEGIN PRIVATE KEY`, `BEGIN ENCRYPTED PRIVATE KEY`) | PBES2 con PBKDF2 y AES-CBC |
+| PEM clásico (`BEGIN RSA PRIVATE KEY`, `BEGIN EC PRIVATE KEY`) | AES-CBC con `DEK-Info` |
+
+- Las claves Ed25519 en PKCS#8 sin clave pública no se aceptan: se importan en formato OpenSSH.
+- Generación de claves Ed25519 en el teléfono, o ECDSA P-256 si el teléfono no tiene Ed25519, y exportación de la pública.
+- bcrypt-pbkdf es la única pieza criptográfica propia: solo descifra la clave al importarla.
 
 ## 4. Emulador de terminal
 
