@@ -51,6 +51,15 @@ public class ChannelOpenFailedException(
     public val descripcion: String,
 ) : SshException("El servidor no abrió el canal ($codigo): $descripcion")
 
+public class PassphraseRequiredException : SshException("La clave está protegida con passphrase")
+
+public class WrongPassphraseException : SshException("La passphrase no es correcta")
+
+public class InvalidKeyFileException(
+    mensaje: String,
+    causa: Throwable? = null,
+) : SshException(mensaje, causa)
+
 public class ChannelRequestFailedException(
     public val peticion: String,
 ) : SshException("El servidor rechazó la petición $peticion")
