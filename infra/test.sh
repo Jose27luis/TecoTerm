@@ -42,4 +42,7 @@ opciones_docker=(
     --env TECOTERM_SSHD_HOST_KEY_RSA="$(clave_host rsa)"
     --env TECOTERM_SSHD_HOST_KEY_ECDSA="$(clave_host ecdsa)"
 )
-ejecutar ./gradlew --no-daemon test "$@"
+if [[ $# -eq 0 ]]; then
+    set -- test
+fi
+ejecutar ./gradlew --no-daemon "$@"
