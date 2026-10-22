@@ -9,6 +9,10 @@ public class Ed25519HostKey internal constructor(
 ) : HostKey(blob) {
     override val tipo: String = TIPO
 
+    override val clavePublica: PublicKey = clave
+
+    override val algoritmoPlataforma: String = "Ed25519"
+
     override fun admite(algoritmoFirma: String): Boolean = algoritmoFirma == TIPO
 
     override fun verificarFirma(
